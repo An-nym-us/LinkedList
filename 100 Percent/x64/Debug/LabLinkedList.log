@@ -1,0 +1,6 @@
+﻿  testNode.cpp
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\100 Percent\testNode.h(82,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\100 Percent\testNode.h(83,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\100 Percent\testNode.h(103,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\100 Percent\testNode.h(104,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+  LabLinkedList.vcxproj -> C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\100 Percent\x64\Debug\LabLinkedList.exe
