@@ -2,7 +2,7 @@
  * Header:
  *    Test
  * Summary:
- *    Driver to test stack.h
+ *    Driver to test list.h
  * Author
  *    Br. Helfrich
  ************************************************************************/
@@ -12,7 +12,8 @@
 #endif
  //#undef DEBUG  // Remove this comment to disable unit tests
 
-#include "testStack.h"       // for the stack unit tests
+#include "testList.h"       // for the spy unit tests
+
 
 /**********************************************************************
  * MAIN
@@ -22,9 +23,8 @@ int main()
 {
 #ifdef DEBUG
    // unit tests
-   TestStack().run();
+   TestList().run();
 #endif // DEBUG
-  
+   
    return 0;
 }
-
