@@ -13,6 +13,7 @@
 
 #include "node.h"
 #include "spy.h"
+#include <iostream>
 
 #include <cassert>
 #include <memory>
@@ -27,44 +28,44 @@ public:
       // Construct
       test_create_default();
       test_create_value();
-      test_copy_nullptr();
-      test_copy_one();
-      test_copy_standard();
+      //test_copy_nullptr();
+      //test_copy_one();
+      //test_copy_standard();
       
       // Assign
-      test_assign_emptyToEmpty();
-      test_assign_standardToEmpty();
-      test_assign_emptyToStandard();
-      test_assign_smallToBig();
-      test_assign_bigToSmall();
-      test_swap_emptyEmpty();
-      test_swap_emptyStandard();
-      test_swap_standardEmpty();
-      test_swap_oneTwo();
+      //test_assign_emptyToEmpty();
+      //test_assign_standardToEmpty();
+      //test_assign_emptyToStandard();
+      //test_assign_smallToBig();
+      //test_assign_bigToSmall();
+      //test_swap_emptyEmpty();
+      //test_swap_emptyStandard();
+      //test_swap_standardEmpty();
+      //test_swap_oneTwo();
 
-      // Insert
-      test_insert_emptyBefore();
-      test_insert_emptyAfter();
-      test_insert_frontBefore();
-      test_insert_frontAfter();
-      test_insert_backBefore();
-      test_insert_backAfter();
-      test_insert_middleBefore();
-      test_insert_middleAfter();
+      //// Insert
+      //test_insert_emptyBefore();
+      //test_insert_emptyAfter();
+      //test_insert_frontBefore();
+      //test_insert_frontAfter();
+      //test_insert_backBefore();
+      //test_insert_backAfter();
+      //test_insert_middleBefore();
+      //test_insert_middleAfter();
 
-      // Remove
-      test_remove_nullptr();
-      test_remove_front();
-      test_remove_back();
-      test_remove_middle();
-      test_clear_nullptr();
-      test_clear_one();
-      test_clear_standard();
+      //// Remove
+      //test_remove_nullptr();
+      //test_remove_front();
+      //test_remove_back();
+      //test_remove_middle();
+      //test_clear_nullptr();
+      //test_clear_one();
+      //test_clear_standard();
 
-      // Status
-      test_size_empty();
-      test_size_standard();
-      test_size_standardMiddle();
+      //// Status
+      //test_size_empty();
+      //test_size_standard();
+      //test_size_standardMiddle();
       
       report("Node");
    }
@@ -83,7 +84,7 @@ public:
       n.pPrev = (Node <Spy> *)0xBADF00D2;
       Spy::reset();
       // exercise
-      alloc.construct(&n); // the constructor is called explicitly
+       alloc.construct(&n); // the constructor is called explicitly
       // verify
       assertUnit(Spy::numDefault() == 1);      // a default spy is created
       assertUnit(Spy::numAlloc() == 0);
@@ -108,10 +109,12 @@ public:
       alloc.construct(&n, s); // the constructor is called explicitly
       // verify
       assertUnit(Spy::numCopy() == 1);       // copy 99 to n
+      //std::cout << Spy::numCopy() << std::endl;
       assertUnit(Spy::numAlloc() == 1);      // allocate the new 99
       assertUnit(Spy::numDelete() == 0);
       assertUnit(Spy::numDefault() == 0);
       assertUnit(Spy::numNondefault() == 0);
+      //std::cout << Spy::numNondefault() << std::endl;
       assertUnit(Spy::numCopyMove() == 0);
       //    +----+
       //    | 99 |
