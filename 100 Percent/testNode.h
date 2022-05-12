@@ -109,12 +109,12 @@ public:
       alloc.construct(&n, s); // the constructor is called explicitly
       // verify
       assertUnit(Spy::numCopy() == 1);       // copy 99 to n
-      //std::cout << Spy::numCopy() << std::endl;
+      //std::cout << Spy::numDefault() << std::endl;
       assertUnit(Spy::numAlloc() == 1);      // allocate the new 99
       assertUnit(Spy::numDelete() == 0);
       assertUnit(Spy::numDefault() == 0);
       assertUnit(Spy::numNondefault() == 0);
-      //std::cout << Spy::numNondefault() << std::endl;
+      
       assertUnit(Spy::numCopyMove() == 0);
       //    +----+
       //    | 99 |
