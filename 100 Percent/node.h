@@ -22,6 +22,9 @@
 
 #include <cassert>     // for ASSERT
 #include <iostream>    // for NULL
+#include <vector>
+
+
 
 /*************************************************
  * NODE
@@ -41,11 +44,20 @@ public:
 
    Node()
    {
-      pPrev = pNext = this;
+      pPrev = nullptr;
+      pNext = nullptr;
+      
    }
    Node(const T &  data)
-   {
-      pPrev = pNext = this;
+   {   
+      this->data = data;
+      this->pPrev = nullptr;
+      this->pNext = nullptr;
+
+      
+
+      
+      
    }
    Node(      T && data)
    {
@@ -72,7 +84,41 @@ public:
 template <class T>
 inline Node <T> * copy(const Node <T> * pSource) 
 {
-   return new Node<T>;
+   if (!pSource)
+   {
+      return nullptr;
+   }
+   else
+   {
+      Node<T>* newDestination = new Node<T>;
+      //newDestination->data = pSource->data;
+      //newDestination->pNext = pSource->pNext;
+
+      //pSource->pNext= nullptr;
+      newDestination->pPrev = nullptr;
+      
+      std::cout << " here " << std::endl;
+
+      for (Node<T>* p = newDestination->pPrev; p; p = p->pNext)
+      {
+         std::cout << &p->data;
+      }
+
+
+      // next must be a null ptr
+      newDestination->pNext = nullptr;
+      return newDestination;
+   }
+   
+   
+
+
+
+   //newDestination = pSource;
+   //newDestination->data = pSource->data;
+   //newDestination->pNext = pSource->pNext;
+   //newDestination->pPrev = pSource->pPrev;
+   //return newDestination;
 }
 
 /***********************************************
@@ -87,6 +133,7 @@ template <class T>
 inline void assign(Node <T> * & pDestination, const Node <T> * pSource)
 {
    
+
 }
 
 /***********************************************
