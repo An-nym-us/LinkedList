@@ -50,13 +50,11 @@ public:
    }
    Node(const T &  data)
    {   
+      
+         
       this->data = data;
       this->pPrev = nullptr;
       this->pNext = nullptr;
-
-      
-
-      
       
    }
    Node(      T && data)
