@@ -56,7 +56,7 @@ public:
    list(Iterator first, Iterator last);
    ~list()
    { 
-
+     
    }
 
    //
@@ -323,7 +323,7 @@ inline list::list() :numElements(0), pHead(nullptr), pTail(nullptr) {
 /*****************************************
  * LIST :: COPY constructor
  ****************************************/
-inline list::list(list& rhs)
+inline list::list(list& rhs): pHead(nullptr)
 {
       if(rhs.pHead)
       {
@@ -360,13 +360,47 @@ inline list::list(const std::initializer_list<int>& il)
 {
    if(il.size())
    {
-       std::initializer_list<int>:: iterator ptr;
-       for(ptr = il.begin(); ptr< il.end(); ptr++ )
+       // Çreate a Head Node
+       Node * headNode = new list::Node();
+       pHead = pTail = headNode;
+       
+       // Assign Value to First Node
+       for(auto it = il.begin(); it!= il.end()-2 ; ++it)
        {
-           new list::Node(*ptr);
+//           std::cout << *it<< std::endl;
+           headNode-> data = *it;
+       }
+       // Keep Track of Current Head
+       Node * currentHead = headNode;
+       
+       // Loop Over Remaining Value
+       for(auto it=il.begin()+1; it!= il.end(); ++it)
+       {
+//           std::cout << *it<< std::endl;
+           // Create New Node
+           Node *newNode = new list::Node();
+           
+           // Assign Value to newNode
+           newNode -> data = *it;
+           
+           // Update the Pointers
+           currentHead-> pNext = newNode;
+           newNode-> pPrev = currentHead;
+           
+           // Update the Tail and currentHead
+           pTail = newNode;
+           currentHead = newNode;
+           
        }
        
+       // Point next and previous to NULL
+       pHead -> pPrev = nullptr;
+       pTail -> pNext = nullptr;
+       
    }
+    
+    // Change the numElements
+    numElements = il.size();
 }
 
 /*****************************************
@@ -375,8 +409,48 @@ inline list::list(const std::initializer_list<int>& il)
 template <class Iterator>
 inline list::list(Iterator first, Iterator last)
 {
-   numElements = 99;
-   pHead = pTail = new list::Node();
+
+    int count =0;
+    // Çreate a Head Node
+    Node * headNode = new list::Node();
+    pHead = pTail = headNode;
+    
+    
+    for(auto it= first; it!= last-2; ++it)
+    {
+        headNode-> data = *it;
+        count++;
+    }
+    // Keep Track of Current Head
+    Node * currentHead = headNode;
+    
+    // Loop Over Remaining Value
+    for(auto it=first+1; it!= last; ++it)
+    {
+//           std::cout << *it<< std::endl;
+        // Create New Node
+        Node *newNode = new list::Node();
+        
+        // Assign Value to newNode
+        newNode -> data = *it;
+        
+        // Update the Pointers
+        currentHead-> pNext = newNode;
+        newNode-> pPrev = currentHead;
+        
+        // Update the Tail and currentHead
+        pTail = newNode;
+        currentHead = newNode;
+        
+        count++;
+    }
+    
+    // Point next and previous to NULL
+    pHead -> pPrev = nullptr;
+    pTail -> pNext = nullptr;
+    
+    numElements = count;
+    
 }
 
 /*****************************************
@@ -385,9 +459,7 @@ inline list::list(Iterator first, Iterator last)
  ****************************************/
 inline list ::list(list && rhs) 
 {
-    numElements = rhs.numElements;
-    rhs.numElements = 0;
-    
+
     if(rhs.pHead)
     {
    
@@ -415,7 +487,10 @@ inline list ::list(list && rhs)
     
     rhs.pHead = nullptr;
     rhs.pTail = nullptr;
-
+    
+    
+    numElements = rhs.numElements;
+    rhs.numElements = 0;
 }
 
 /**********************************************
