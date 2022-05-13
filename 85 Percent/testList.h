@@ -71,14 +71,14 @@ public:
       test_back_standardWrite();
 
       // //Insert
-      //test_pushback_empty();
-      //test_pushback_standard();
-      //test_pushback_moveEmpty();
-      //test_pushback_moveStandard();
-      //test_pushfront_empty();
-      //test_pushfront_standard();
-      //test_pushfront_moveEmpty();
-      //test_pushfront_moveStandard();
+      test_pushback_empty();
+      test_pushback_standard();
+      test_pushback_moveEmpty();
+      test_pushback_moveStandard();
+      test_pushfront_empty();
+      test_pushfront_standard();
+      test_pushfront_moveEmpty();
+      test_pushfront_moveStandard();
       //test_insert_empty();
       //test_insert_standardFront();
       //test_insert_standardMiddle();
@@ -88,22 +88,22 @@ public:
       //test_insertMove_standardMiddle();
 
       // //Remove
-      //test_clear_empty();
-      //test_clear_standard();
-      //test_popback_empty();
-      //test_popback_standard();
-      //test_popfront_empty();
-      //test_popfront_standard();
+      test_clear_empty();
+      test_clear_standard();
+      test_popback_empty();
+      test_popback_standard();
+      test_popfront_empty();
+      test_popfront_standard();
       //test_erase_empty();
       //test_erase_standardFront();
       //test_erase_standardMiddle();
       //test_erase_standardEnd();
 
       // //Status
-      //test_size_empty();
-      //test_size_three();
-      //test_empty_empty();
-      //test_empty_three();
+      test_size_empty();
+      test_size_three();
+      test_empty_empty();
+      test_empty_three();
 //
       report("List");
    }

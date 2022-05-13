@@ -106,7 +106,7 @@ public:
    // Status
    //
 
-   bool empty()  const { return numElements < 0; }
+   bool empty()  const { return numElements <= 0; }
    size_t size() const { return numElements; }
      
 private:
@@ -188,7 +188,6 @@ public:
    }
    iterator & operator = (const iterator & rhs)
    {
-       std:: cout << "I was also called" << std:: endl;
        this -> p = rhs.p;
       return *this;
    }
@@ -653,8 +652,9 @@ inline list & list :: operator = (const std::initializer_list<int>& rhs)
  *********************************************/
 inline void list :: clear()
 {
-    delete pHead;
-    delete pTail;
+   pHead = nullptr;
+   pTail = nullptr;
+   numElements = 0;
 }
 
 /*********************************************
@@ -790,16 +790,25 @@ inline void list ::pop_front()
  
     if(pHead)
     {
-        Node *nodeToDelete = pHead;
+
+       Node *nodeToDelete = pHead;
         
-        pHead = pHead->pNext;
+       pHead = pHead->pNext;
         
-        pHead->pPrev = nullptr;
+       pHead->pPrev = nullptr;
         
-        delete nodeToDelete;
+       delete nodeToDelete;
         
-        numElements--;
+       numElements--;
     }
+    else
+    {
+       pHead = nullptr;
+       pTail = nullptr;
+       numElements =0;
+    }
+
+   // std::cout << "Im called" << std::endl;
 }
 
 /*********************************************
@@ -851,7 +860,21 @@ inline int & list :: back()
  ******************************************/
 inline typename list :: iterator  list :: erase(const list :: iterator & it)
 {
-   return end();
+  // std::cout << "Im  called" << std::endl;
+   if (!(it.p))
+   {
+
+      //it.p->data = nullptr;
+      return it.p;
+      return end();
+   }
+   else
+   {
+
+      return it.p;
+   }
+
+
 }
 
 /******************************************
@@ -865,6 +888,15 @@ inline typename list :: iterator  list :: erase(const list :: iterator & it)
 inline typename list :: iterator list :: insert(list :: iterator it,
                                                 const int & data)
 {
+   if (!pTail)
+   {
+      std::cout << "HML" << std::endl;
+      pHead = pTail = new Node(data);
+      numElements = 1;
+      return begin();
+   }
+   //it.p->pNext
+   
    return end();
 }
 
@@ -905,7 +937,7 @@ void swap(list & lhs, list & rhs)
  *********************************************/
 inline typename list::iterator list::begin()
 {
-    if(pHead == NULL)
+    if(!pHead)
     {
         return iterator(nullptr);
     }
@@ -922,8 +954,13 @@ inline typename list::iterator list::begin()
  *********************************************/
 inline typename list::iterator list::end()
 {
-//    std:: cout << "I think I am here" << std::endl;
 
+   if (!pTail)
+   {
+
+      return iterator(nullptr);
+
+   }
    return iterator(pTail->pNext);
 }
 
