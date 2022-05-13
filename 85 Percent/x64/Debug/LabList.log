@@ -1,2 +1,10 @@
 ﻿  testList.cpp
-C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(16,10): fatal error C1083: Cannot open include file: 'unitTest.h': No such file or directory
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(120,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(121,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(134,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(135,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(148,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(149,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(187,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(188,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+  LabList.vcxproj -> C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\x64\Debug\LabList.exe

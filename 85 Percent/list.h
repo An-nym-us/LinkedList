@@ -140,8 +140,11 @@ public:
    }
    Node(const int & data)
    {
-       this -> data = data;
-       pNext = pPrev = nullptr;
+
+         this->data = data;
+         pNext = pPrev = nullptr;
+
+
 
    }
    Node(int && data)
@@ -325,9 +328,13 @@ inline list ::list(size_t num)
 /*****************************************
  * LIST :: DEFAULT constructor
  ****************************************/
-inline list::list() :numElements(0), pHead(nullptr), pTail(nullptr) {
-//   numElements = 0;
-//   pHead = pTail = new list::Node();
+inline list::list() :numElements(0), pHead(nullptr), pTail(nullptr) 
+{
+   pHead = nullptr;
+   pTail = nullptr;
+   numElements = 0;
+
+
 }
 
 /*****************************************
@@ -357,9 +364,20 @@ inline list::list(list& rhs): pHead(nullptr), numElements(0), pTail(nullptr)
 //          pHead->pPrev = nullptr;
 //          pTail->pNext = nullptr;
 //      }
-   *this = rhs;
-//
-//    numElements = rhs.numElements;
+   //*this = rhs;
+
+  
+   this->pTail = rhs.pTail;
+   if (rhs.pHead == nullptr)
+   {
+      this->pHead = nullptr;;
+   }
+   else
+   {
+      *this = rhs;
+   }
+   
+   this->numElements = rhs.numElements;
 
     
 }
@@ -428,10 +446,11 @@ inline list::list(Iterator first, Iterator last)
     pHead = pTail = headNode;
     
     
-    for(auto it= first; it!= last-2; ++it)
+    for(auto it= first+1; it!= last-2; ++it)
     {
-        headNode-> data = *it;
-        count++;
+      //if (it != nullptr)
+         headNode-> data = *it;
+       count++;
     }
     // Keep Track of Current Head
     Node * currentHead = headNode;
@@ -503,6 +522,9 @@ inline list ::list(list && rhs): numElements(0), pHead(nullptr), pTail(nullptr)
 //
 //    numElements = rhs.numElements;
 //    rhs.numElements = 0;
+
+
+
    *this = std::move(rhs);
    
 }
@@ -528,6 +550,19 @@ inline list & list  :: operator = (list && rhs)
  *********************************************/
 inline list & list :: operator = (list & rhs)
 {
+   if (!rhs.pHead && !pHead)
+   {
+      return *this;
+   }
+   if (!rhs.pHead)
+   {
+      pHead = nullptr;
+      pTail = nullptr;
+      numElements = 0;
+      return *this;
+   }
+
+
     pHead = new list::Node(rhs.pHead->data);
     pTail = pHead;
     
@@ -776,7 +811,15 @@ inline void list ::pop_front()
  *********************************************/
 inline int & list :: front()
 {
-    return pHead->data;
+   if (pHead)
+   {
+      return pHead->data;
+   }
+   else
+   {
+      throw("ERROR: unable to access data from an empty list");
+   }
+
 }
 
 /*********************************************
@@ -788,7 +831,14 @@ inline int & list :: front()
  *********************************************/
 inline int & list :: back()
 {
-    return pTail->data;
+    if (pTail)
+    {
+       return pTail->data;
+    }
+    else
+    {
+       throw("ERROR: unable to access data from an empty list");
+    }
 }
 
 
