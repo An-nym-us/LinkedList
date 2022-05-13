@@ -135,6 +135,7 @@ public:
    //
    Node()
    {
+      data= 0;
       pNext = pPrev = nullptr;
    }
    Node(const int & data)
@@ -199,31 +200,31 @@ public:
        return p->data;
    }
    
-   // postfix increment
+   // postfix increment it++
    iterator operator ++ (int postfix)
    {
-   
+      iterator itOld = *this;
       p = p->pNext;
-      return *this;
+      return itOld;
    }
    
-   // prefix increment
+   // prefix increment ++it
    iterator & operator ++ ()
    {
       p = p->pNext;
       return *this;
    }
    
-   // postfix decrement
+   // postfix decrement it--
    iterator operator -- (int postfix)
    {
        iterator tmp(*this);
-       p--;
+       p= p-> pPrev;
       return tmp;
   
    }
    
-   // prefix decrement
+   // prefix decrement --it
    iterator & operator -- ()
    {
        p = p->pPrev;
@@ -252,7 +253,7 @@ inline list ::list(size_t num, const int & t): pHead(nullptr),pTail(nullptr), nu
        
        size_t count = 0;
        // Loop
-       while(count!= num-1 && currentHead)
+       while (count!= num-1 && currentHead)
        {
            // Create a Node
            Node * newNode = new list::Node(t);
@@ -289,7 +290,7 @@ inline list ::list(size_t num)
         pHead = pTail = nullptr;
     } else {
         // Create a New Node
-        pHead =pTail = new list::Node(0);
+        pHead =pTail = new list::Node();
 
         // Current Head
         Node *currentHead = pHead;
@@ -332,32 +333,33 @@ inline list::list() :numElements(0), pHead(nullptr), pTail(nullptr) {
 /*****************************************
  * LIST :: COPY constructor
  ****************************************/
-inline list::list(list& rhs): pHead(nullptr)
+inline list::list(list& rhs): pHead(nullptr), numElements(0), pTail(nullptr)
 {
-      if(rhs.pHead)
-      {
-          pHead = pTail = new list::Node(rhs.pHead->data);
-          Node * currentRhsHead = rhs.pHead-> pNext;
-
-          Node * currentHead = pHead;
-
-          while(currentRhsHead != NULL)
-          {
-              Node * newNode = new list::Node(currentRhsHead->data);
-              currentHead->pNext = newNode;
-              newNode->pPrev = currentHead;
-              
-              pTail = newNode;
-              
-            currentRhsHead = currentRhsHead -> pNext;
-            currentHead = currentHead -> pNext;
-          }
-
-          pHead->pPrev = nullptr;
-          pTail->pNext = nullptr;
-      }
-    
-    numElements = rhs.numElements;
+//      if(rhs.pHead)
+//      {
+//          pHead = pTail = new list::Node(rhs.pHead->data);
+//          Node * currentRhsHead = rhs.pHead-> pNext;
+//
+//          Node * currentHead = pHead;
+//
+//          while(currentRhsHead != NULL)
+//          {
+//              Node * newNode = new list::Node(currentRhsHead->data);
+//              currentHead->pNext = newNode;
+//              newNode->pPrev = currentHead;
+//
+//              pTail = newNode;
+//
+//            currentRhsHead = currentRhsHead -> pNext;
+//            currentHead = currentHead -> pNext;
+//          }
+//
+//          pHead->pPrev = nullptr;
+//          pTail->pNext = nullptr;
+//      }
+   *this = rhs;
+//
+//    numElements = rhs.numElements;
 
     
 }
@@ -383,7 +385,8 @@ inline list::list(const std::initializer_list<int>& il)
        Node * currentHead = headNode;
        
        // Loop Over Remaining Value
-       for(auto it=il.begin()+1; it!= il.end(); ++it)
+      auto it = il.begin();
+      for(++it; it != il.end(); ++it)
        {
 //           std::cout << *it<< std::endl;
            // Create New Node
@@ -466,40 +469,42 @@ inline list::list(Iterator first, Iterator last)
  * LIST :: MOVE constructors
  * Steal the values from the RHS
  ****************************************/
-inline list ::list(list && rhs) 
+inline list ::list(list && rhs): numElements(0), pHead(nullptr), pTail(nullptr)
 {
 
-    if(rhs.pHead)
-    {
+//    if(rhs.pHead)
+//    {
+//
+//        pHead = pTail = new list::Node(rhs.pHead->data);
+//        Node * currentRhsHead = rhs.pHead-> pNext;
+//
+//        Node * currentHead = pHead;
+//
+//        while(currentRhsHead != NULL)
+//        {
+//            Node * newNode = new list::Node(currentRhsHead->data);
+//            currentHead->pNext = newNode;
+//            newNode->pPrev = currentHead;
+//
+//            pTail = newNode;
+//
+//          currentRhsHead = currentRhsHead -> pNext;
+//          currentHead = currentHead -> pNext;
+//        }
+//
+//        pHead->pPrev = nullptr;
+//        pTail->pNext = nullptr;
+//
+//    }
+//
+//    rhs.pHead = nullptr;
+//    rhs.pTail = nullptr;
+//
+//
+//    numElements = rhs.numElements;
+//    rhs.numElements = 0;
+   *this = std::move(rhs);
    
-        pHead = pTail = new list::Node(rhs.pHead->data);
-        Node * currentRhsHead = rhs.pHead-> pNext;
-
-        Node * currentHead = pHead;
-
-        while(currentRhsHead != NULL)
-        {
-            Node * newNode = new list::Node(currentRhsHead->data);
-            currentHead->pNext = newNode;
-            newNode->pPrev = currentHead;
-            
-            pTail = newNode;
-            
-          currentRhsHead = currentRhsHead -> pNext;
-          currentHead = currentHead -> pNext;
-        }
-
-        pHead->pPrev = nullptr;
-        pTail->pNext = nullptr;
-        
-    }
-    
-    rhs.pHead = nullptr;
-    rhs.pTail = nullptr;
-    
-    
-    numElements = rhs.numElements;
-    rhs.numElements = 0;
 }
 
 /**********************************************
@@ -829,7 +834,16 @@ inline typename list ::iterator list  ::insert(list ::iterator it,
  *********************************************/
 void swap(list & lhs, list & rhs)
 {
-    std::swap(rhs,lhs);
+    // Swap Head
+   std::swap(lhs.pHead, rhs.pHead);
+   
+   // Swap Tail
+   std:: swap(lhs.pTail, rhs.pTail);
+   
+   // Swap numElements
+   std:: swap(lhs.numElements, rhs.numElements);
+   
+   
 }
 
 /*********************************************
@@ -860,7 +874,7 @@ inline typename list::iterator list::end()
 {
 //    std:: cout << "I think I am here" << std::endl;
 
-   return iterator(pTail);
+   return iterator(pTail->pNext);
 }
 
 
