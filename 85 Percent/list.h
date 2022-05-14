@@ -863,14 +863,44 @@ inline int & list :: back()
  ******************************************/
 inline typename list :: iterator  list :: erase(const list :: iterator & it)
 {
-   if (it.p)
+   if (empty())
    {
       return nullptr;
    }
    
-   if (it == begin())
-   {
 
+
+   else 
+   {
+      Node* temp = it.p->pNext;
+
+      if (it.p->pNext)
+      {
+         it.p->pNext->pPrev = it.p->pPrev;
+         temp = it.p->pNext;
+
+         //std::cout << "testign" << std::endl;
+         //it.p->
+      }
+      else
+      {
+         pTail = pTail->pPrev;
+      }
+
+
+      if (it.p->pPrev)
+      {
+         it.p->pPrev->pNext = it.p->pNext;
+      }
+      else
+      {
+         pHead = pHead->pNext;
+      }
+
+
+      delete it.p;
+      numElements--;
+      return temp;
    }
 
 }
