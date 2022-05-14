@@ -15,7 +15,7 @@
  *        List         : A class that represents a List
  *        ListIterator : An iterator through List
  * Author
- *    <your names here>
+ *    Jonathan Gunderson and Sulav Dahal
  ************************************************************************/
 
 #pragma once
@@ -55,8 +55,7 @@ public:
    list(Iterator first, Iterator last);
   ~list() 
    {
-      pHead = nullptr;
-      pTail= nullptr;
+      pHead = pTail = nullptr;
       numElements= 0;
    }
 
@@ -108,7 +107,7 @@ public:
    // Status
    //
 
-    bool empty()  const { return numElements ==0; }
+   bool empty()  const { return numElements ==0; }
    size_t size() const { return numElements;   }
 
 
@@ -138,18 +137,18 @@ public:
    //
    Node()  
    {
-       this-> data = 0;
-       pNext = pPrev = nullptr;
+      this->data = 0;
+      pNext = pPrev = nullptr;
    }
    Node(const T &  data)  
    {
-       this-> data = data;
-       pNext = pPrev = nullptr;
+      this->data = data;
+      pNext = pPrev = nullptr;
    }
    Node(      T && data)  
    {
-       this-> data = std::move(data);
-       pNext = pPrev = nullptr;
+      this->data = std::move(data);
+      pNext = pPrev = nullptr;
    }
 
    //
@@ -176,7 +175,7 @@ public:
    // constructors, destructors, and assignment operator
    iterator() 
    {
-       p = nullptr;
+      p = nullptr;
    }
    iterator(Node * p) 
    {
@@ -188,50 +187,48 @@ public:
    }
    iterator & operator = (const iterator & rhs)
    {
-       this-> p = rhs.p;
+      this->p = rhs.p;
       return *this;
    }
    
    // equals, not equals operator
-    bool operator == (const iterator & rhs) const {
-        return this->p == rhs.p;  }
-    bool operator != (const iterator & rhs) const {return this->p != rhs.p; }
+    bool operator == (const iterator & rhs) const { return this->p == rhs.p; }
+    bool operator != (const iterator & rhs) const { return this->p != rhs.p; }
 
    // dereference operator, fetch a node
    T & operator * ()
    {
-       return p->data;
+      return p->data;
    }
 
    // postfix increment
    iterator operator ++ (int postfix)
    {
-       iterator itOld = *this;
-       p = p->pNext;
-       return itOld;
-
+      iterator itOld = *this;
+      p = p->pNext;
+      return itOld;
    }
 
    // prefix increment
    iterator & operator ++ ()
    {
-       p = p->pNext;
-       return *this;
+      p = p->pNext;
+      return *this;
    }
    
    // postfix decrement
    iterator operator -- (int postfix)
    {
-       iterator tmp(*this);
-       p= p-> pPrev;
-       return tmp;
+      iterator temp(*this);
+      p= p->pPrev;
+      return temp;
    }
 
    // prefix decrement
    iterator & operator -- ()
    {
-       p = p->pPrev;
-       return *this;
+      p = p->pPrev;
+      return *this;
    } 
 
    // two friends who need to access p directly
@@ -251,39 +248,35 @@ private:
 template <typename T>
 list <T> ::list(size_t num, const T & t):pHead(nullptr), pTail(nullptr), numElements(num)
 {
-    if(num>=0)
-     {
-         // Create a New Node
-         pHead = pTail = new list::Node(t);
+   if(num >= 0)
+   {
+      pHead = pTail = new list::Node(t);  // Create a New Node
 
-         // Current Head
-         Node *currentHead = pHead;
+      // Current Head
+      Node *currentHead = pHead;
          
-         size_t count = 0;
-         // Loop
-         while (count!= num-1 && currentHead)
-         {
-             // Create a Node
-             Node * newNode = new list::Node(t);
-  //           newNode -> data = t;
-             // Assing currenthead next to new node
-             currentHead -> pNext = newNode;
-             
-             // Assign currenthead prev to currentHead
-             newNode-> pPrev = currentHead;
-             
-             // Update Tail
-             pTail = newNode;
-             
-             // Update Pointers
-             currentHead = currentHead-> pNext;
-             count++;
-         }
-         // Assign Null pointers
-         pHead -> pPrev = nullptr;
-         pTail -> pNext = nullptr;
-     }
-      numElements = num;
+      for (size_t it = 0; (it != num - 1) && currentHead; it++)
+      {
+         // Create a Node
+         Node* newNode = new list::Node(t);  
+
+         currentHead->pNext = newNode; // Assing currenthead next to new node
+
+         // Assign currenthead prev to currentHead
+         newNode->pPrev = currentHead;
+
+         // Update Tail
+         pTail = newNode;
+
+         // Update Pointers
+         currentHead = currentHead->pNext;
+      }
+
+      // Assign Null pointers
+      pHead->pPrev = pTail->pNext = nullptr;
+   }
+
+   numElements = num;
 }
 
 /*****************************************
@@ -294,57 +287,49 @@ template <typename T>
 template <class Iterator>
 list <T> ::list(Iterator first, Iterator last)
 {
-    
-    if(first)
-    {
-        int count =0;
-        // Çreate a Head Node
-        Node * headNode = new list::Node();
-        pHead = pTail = headNode;
-        
-        
-        for(auto it= first; it!= last-2; ++it)
-        {
-              headNode->data = *it;
-           count++;
-        }
-        // Keep Track of Current Head
-        Node * currentHead = headNode;
-        
-        // Loop Over Remaining Value
-        for(auto it=first+1; it!= last; ++it)
-        {
-         //  std::cout << *it<< std::endl;
-            // Create New Node
-            Node *newNode = new list::Node();
-            
-            // Assign Value to newNode
-            newNode -> data = *it;
-            
-            // Update the Pointers
-            currentHead-> pNext = newNode;
-            newNode-> pPrev = currentHead;
-            
-            // Update the Tail and currentHead
-            pTail = newNode;
-            currentHead = newNode;
-            
-            count++;
-        }
-        
-        // Point next and previous to NULL
-        pHead -> pPrev = nullptr;
-        pTail -> pNext = nullptr;
-        
-        numElements = count;
-    }
-    else
-    {
-        numElements = 0;
-        pHead = nullptr;
-        pTail = nullptr;
-    }
+   if(first)
+   {
+      int count = 0;
 
+      // Çreate a Head Node
+      Node * headNode = new list::Node();
+      pHead = pTail = headNode;
+          
+      for(auto it = first; it != last-2; ++it)
+      {
+         headNode->data = *it;
+         count++;
+      }
+
+      Node * currentHead = headNode;   // Keep Track of Current Head
+        
+      // Loop Over Remaining Value
+      for(auto it = first + 1; it != last; ++it)
+      {
+         Node *newNode = new list::Node();   // Create New Node
+            
+         newNode->data = *it;  // Assign Value to newNode
+            
+         // Update the Pointers
+         currentHead->pNext = newNode;
+         newNode->pPrev = currentHead;
+            
+         // Update the Tail and currentHead
+         currentHead = pTail = newNode;
+            
+         count++;
+      }
+        
+      // Point next and previous to NULL
+      pHead->pPrev = pTail->pNext = nullptr;
+        
+      numElements = count;
+   }
+   else
+   {
+      pHead = pTail = nullptr;
+      numElements = 0;
+   }
 }
 
 /*****************************************
@@ -354,50 +339,46 @@ list <T> ::list(Iterator first, Iterator last)
 template <typename T>
 list <T> ::list(const std::initializer_list<T>& il)
 {
-    if(il.size())
-    {
-        // Çreate a Head Node
-        Node * headNode = new list::Node();
-        pHead = pTail = headNode;
+   if(il.size())
+   {
+      // Create a Head Node
+      Node * headNode = new list::Node();
+      pHead = pTail = headNode;
         
-        // Assign Value to First Node
-        for(auto it = il.begin(); it!= il.end()-2 ; ++it)
-        {
- //           std::cout << *it<< std::endl;
-            headNode-> data = *it;
-        }
-        // Keep Track of Current Head
-        Node * currentHead = headNode;
+      // Assign Value to First Node
+      for(auto it = il.begin(); it!= il.end()-2 ; ++it)
+         headNode->data = *it;
+
+
+      Node * currentHead = headNode;
         
-        // Loop Over Remaining Value
-       auto it = il.begin();
-       for(++it; it != il.end(); ++it)
-        {
- //           std::cout << *it<< std::endl;
-            // Create New Node
-            Node *newNode = new list::Node();
+      // Loop Over Remaining Value
+      for(auto it = il.begin() + 1; it != il.end(); ++it)
+      {
+         // Create New Node
+         Node *newNode = new list::Node();
             
-            // Assign Value to newNode
-            newNode -> data = *it;
+         // Assign Value to newNode
+         newNode->data = *it;
             
-            // Update the Pointers
-            currentHead-> pNext = newNode;
-            newNode-> pPrev = currentHead;
+         // Update the Pointers
+         currentHead->pNext = newNode;
+         newNode->pPrev = currentHead;
             
-            // Update the Tail and currentHead
-            pTail = newNode;
-            currentHead = newNode;
+         // Update the Tail and currentHead
+         pTail = newNode;
+         currentHead = newNode;
             
-        }
+      }
         
-        // Point next and previous to NULL
-        pHead -> pPrev = nullptr;
-        pTail -> pNext = nullptr;
+      // Point next and previous to NULL
+      pHead->pPrev = nullptr;
+      pTail->pNext = nullptr;
         
-    }
+   }
      
-     // Change the numElements
-     numElements = il.size();
+   // Change the numElements
+   numElements = il.size();
 }
 
 /*****************************************
@@ -407,42 +388,40 @@ list <T> ::list(const std::initializer_list<T>& il)
 template <typename T>
 list <T> ::list(size_t num)
 {
-    // Check if size was less than Zero
-    if(num <= 0)
-    {
-        pHead = pTail = nullptr;
-    } else {
-        // Create a New Node
-        pHead =pTail = new list::Node();
+   // Check if size was less than Zero
+   if(num <= 0)
+   {
+      pHead = pTail = nullptr;
+   } 
+   else 
+   {
+      // Create a New Node
+      pHead = pTail = new list::Node();
 
-        // Current Head
-        Node *currentHead = pHead;
-        // Track Count
-        size_t count = 0;
-        // Loop
-        while(count != num-1 && currentHead)
-        {
-            // Create a Node
-            Node * newNode = new list::Node(0);
-            // Assign Currenthead next to new Node
-            currentHead-> pNext = newNode;
-            // Assing newNode prev to currentHead
-            newNode -> pPrev = currentHead;
+      // Current Head
+      Node *currentHead = pHead;
 
-            // Update the Tail
-            pTail = newNode;
+      for (size_t it = 0; (it != num - 1) && currentHead; it++)
+      {
+         // Create a Node
+         Node* newNode = new list::Node(0);
 
-            // Update the Head
-            currentHead = currentHead -> pNext;
-            // Increment the Counter
-            count++;
-        }
-        // Assign to Null Pointers
-        pHead -> pPrev = nullptr;
-        pTail -> pNext = nullptr;
-    }
+         // Assign Currenthead next to new Node
+         currentHead->pNext = newNode;
+         newNode->pPrev = currentHead;
+
+         // Update the Tail
+         pTail = newNode;
+
+         // Update the Head
+         currentHead = currentHead->pNext;
+      }
+
+      // Assign to Null Pointers
+      pHead->pPrev = pTail->pNext = nullptr;
+   }
     
-    numElements = num;
+   numElements = num;
 }
 
 /*****************************************
@@ -451,9 +430,8 @@ list <T> ::list(size_t num)
 template <typename T>
 list <T> ::list():numElements(0), pHead(nullptr), pTail(nullptr)
 {
-    pHead = nullptr;
-    pTail = nullptr;
-    numElements = 0;
+   pHead = pTail = nullptr;
+   numElements = 0;
 }
 
 /*****************************************
@@ -462,16 +440,12 @@ list <T> ::list():numElements(0), pHead(nullptr), pTail(nullptr)
 template <typename T>
 list <T> ::list(list& rhs) :pHead(nullptr), pTail(nullptr), numElements(0)
 {
-    if(rhs.pHead == nullptr)
-    {
-       this->pHead = nullptr;
-    }
-    else
-    {
-       *this = rhs;
-    }
+   if(!rhs.pHead)
+      this->pHead = nullptr;
+   else
+      *this = rhs;
     
-    numElements = rhs.numElements;
+   numElements = rhs.numElements;
 }
 
 /*****************************************
@@ -480,17 +454,14 @@ list <T> ::list(list& rhs) :pHead(nullptr), pTail(nullptr), numElements(0)
  ****************************************/
 template <typename T>
 list <T> ::list(list <T>&& rhs): numElements(0), pHead(nullptr), pTail(nullptr)
-
 {
-    pHead = rhs.pHead;
-    pTail = rhs.pTail;
+   pHead = rhs.pHead;
+   pTail = rhs.pTail;
     
-    rhs.pHead = nullptr;
-    rhs.pTail = nullptr;
+   rhs.pHead = rhs.pTail = nullptr;
     
-    
-    numElements = rhs.numElements;
-    rhs.numElements =0;
+   numElements = rhs.numElements;
+   rhs.numElements = 0;
 }
 
 /**********************************************
@@ -503,14 +474,15 @@ list <T> ::list(list <T>&& rhs): numElements(0), pHead(nullptr), pTail(nullptr)
 template <typename T>
 list <T>& list <T> :: operator = (list <T> && rhs)
 {
-    pHead = rhs.pHead;
-    pTail = rhs.pTail;
-    rhs.pHead  = rhs.pTail = nullptr;
-    
-    numElements = rhs.numElements;
-    rhs.numElements = 0;
-    return *this;
+   pHead = rhs.pHead;
+   pTail = rhs.pTail;
 
+   rhs.pHead  = rhs.pTail = nullptr;
+    
+   numElements = rhs.numElements;
+   rhs.numElements = 0;
+
+   return *this;
 }
 
 /**********************************************
@@ -524,43 +496,40 @@ template <typename T>
 list <T> & list <T> :: operator = (list <T> & rhs)
 {
 
-    if (!rhs.pHead && !pHead)
-      {
-         return *this;
-      }
-      if (!rhs.pHead)
-      {
-         pHead = nullptr;
-         pTail = nullptr;
-         numElements = 0;
-         return *this;
-      }
+   if (!rhs.pHead && !pHead)
+   {
+      return *this;
+   }
+   if (!rhs.pHead)
+   {
+      pHead = pTail = nullptr;
+      numElements = 0;
+      return *this;
+   }
+
+   pHead = new list::Node(rhs.pHead->data);
+   pTail = pHead;
+       
+   Node *currentHeadRhs = rhs.pHead->pNext;
+   Node *currentHead = pHead;
+       
+   for (;currentHeadRhs != 0; currentHeadRhs = currentHeadRhs->pNext)
+   {
+      Node* newNode = new list::Node(currentHeadRhs->data);
+
+      currentHead->pNext = newNode;
+      newNode->pPrev = currentHead;
+
+      pTail = newNode;
+      currentHead = currentHead->pNext;          
+   }
 
 
-       pHead = new list::Node(rhs.pHead->data);
-       pTail = pHead;
        
-       Node *currentHeadRhs = rhs.pHead->pNext;
-       Node *currentHead = pHead;
-       
-       while(currentHeadRhs!= NULL)
-       {
-           Node * newNode = new list::Node(currentHeadRhs->data);
-           
-           currentHead->pNext = newNode;
-           newNode->pPrev = currentHead;
-           
-           pTail= newNode;
-           currentHeadRhs = currentHeadRhs->pNext;
-           currentHead = currentHead->pNext;
-       }
-       
-       pHead->pPrev =nullptr;
-       pTail->pNext = nullptr;
-       
-       numElements = rhs.numElements;
+   pHead->pPrev = pTail->pNext = nullptr;
+   numElements = rhs.numElements;
     
-    return *this;
+   return *this;
 }
 
 /**********************************************
@@ -573,54 +542,51 @@ list <T> & list <T> :: operator = (list <T> & rhs)
 template <typename T>
 list <T>& list <T> :: operator = (const std::initializer_list<T>& rhs)
 {
-    if(rhs.begin())
-    {
-        if(numElements == rhs.size())
-        {
-            Node *currentHead = pHead;
+   if(rhs.begin())
+   {
+      if(numElements == rhs.size())
+      {
+         Node *currentHead = pHead;
 
-            for(auto it = rhs.begin(); it!= rhs.end(); ++it)
-            {
-                currentHead-> data = *it;
-                currentHead = currentHead->pNext;
-            }
-        }
+         for(auto it = rhs.begin(); it != rhs.end(); ++it)
+         {
+            currentHead->data = *it;
+            currentHead = currentHead->pNext;
+         }
+      }
         
-        else
-        {
-      
-            Node *currentHead = pHead;
-            this->clear();
-            for(auto it =rhs.begin(); it!=rhs.end(); ++it)
-            {
-                Node* newNode = new list::Node(*it);
+   else
+   {  
+      Node *currentHead = pHead;
+      this->clear();
+
+      for(auto it = rhs.begin(); it != rhs.end(); ++it)
+      {
+         Node* newNode = new list::Node(*it);
                 
-                if(pHead == nullptr)
-                {
-                    pHead = newNode;
-                    pTail = pHead;
-                    currentHead = pHead;
-                }
-                else
-                {
-                    currentHead->pNext = newNode;
-                    newNode->pPrev = currentHead;
-                    pTail = newNode;
-                    currentHead = currentHead->pNext;
-                }
-            }
-            numElements = rhs.size();
-        }
-        
-    }
-    else
-    {
-        pHead = nullptr;
-        pTail = nullptr;
-    }
- 
+         if(!pHead)
+         {
+            pHead = newNode;
+            currentHead = pTail = pHead;
+         }
+         else
+         {
+            currentHead->pNext = newNode;
+            newNode->pPrev = currentHead;
 
-    
+            pTail = newNode;
+            currentHead = currentHead->pNext;
+         }
+      }
+      numElements = rhs.size();
+   }
+        
+   }
+   else
+   {
+      pHead = pTail = nullptr;
+   }
+ 
    return *this;
 }
 
@@ -634,9 +600,8 @@ list <T>& list <T> :: operator = (const std::initializer_list<T>& rhs)
 template <typename T>
 void list <T> :: clear()
 {
-    pHead = nullptr;
-    pTail = nullptr;
-    numElements = 0;
+   pHead = pTail = nullptr;
+   numElements = 0;
 }
 
 /*********************************************
@@ -649,42 +614,43 @@ void list <T> :: clear()
 template <typename T>
 void list <T> :: push_back(const T & data)
 {
-    Node *newNode= new list:: Node(data);
-    if(pHead == nullptr)
-    {
-        pHead = newNode;
-        pTail = pHead;
-    }
-    else
-    {
-        pTail->pNext = newNode;
-        newNode-> pPrev = pTail;
-        pTail = newNode;
-        pTail->pNext = nullptr;
-    }
-     numElements++;
+   Node *newNode= new list:: Node(data);
 
+   if(!pHead)
+   {
+      pHead = pTail = newNode;
+   }
+   else
+   {
+      pTail->pNext = newNode;
+      newNode->pPrev = pTail;
+
+      pTail = newNode;
+      pTail->pNext = nullptr;
+   }
+
+   numElements++;
 }
 
 template <typename T>
 void list <T> ::push_back(T && data)
 {
-    Node *newNode= new list:: Node(data);
-    if(pHead == nullptr)
-    {
-        pHead = newNode;
-        pTail = pHead;
-    }
-    else
-    {
-        pTail->pNext = newNode;
-        newNode-> pPrev = pTail;
-        pTail = newNode;
-        pTail->pNext = nullptr;
-    }
- 
-    numElements++;
+   Node *newNode= new list:: Node(data);
 
+   if(!pHead)
+   {
+      pTail = pHead = newNode;;
+   }
+   else
+   {
+      pTail->pNext = newNode;
+      newNode->pPrev = pTail;
+
+      pTail = newNode;
+      pTail->pNext = nullptr;
+   }
+ 
+   numElements++;
 }
 
 /*********************************************
@@ -697,47 +663,43 @@ void list <T> ::push_back(T && data)
 template <typename T>
 void list <T> :: push_front(const T & data)
 {
-    Node * newNode = new list:: Node(data);
+   Node * newNode = new list:: Node(data);
     
-    if(pHead == nullptr)
-    {
-        pHead = newNode;
-        pTail = pHead;
-    }
-    else
-    {
-        newNode-> pNext = pHead;
-        pHead ->pPrev = newNode;
-        pHead = newNode;
-        
-        pHead-> pPrev = nullptr;
-    }
+   if(!pHead)
+   {
+      pTail = pHead = newNode;;
+   }
+   else
+   {
+      newNode->pNext = pHead;
+      pHead->pPrev = newNode;
+
+      pHead = newNode;
+      pHead->pPrev = nullptr;
+   }
     
-    numElements++;
-
-
+   numElements++;
 }
 
 template <typename T>
 void list <T> ::push_front(T && data)
 {
-    Node * newNode = new list:: Node(data);
+   Node * newNode = new list:: Node(data);
     
-    if(pHead == nullptr)
-    {
-        pHead = newNode;
-        pTail = pHead;
-    }
-    else
-    {
-        newNode-> pNext = pHead;
-        pHead ->pPrev = newNode;
-        pHead = newNode;
-        
-        pHead-> pPrev = nullptr;
-    }
+   if(!pHead)
+   {
+      pHead = pTail = newNode;
+   }
+   else
+   {
+      newNode->pNext = pHead;
+      pHead->pPrev = newNode;
+
+      pHead = newNode;
+      pHead->pPrev = nullptr;
+   }
     
-    numElements++;
+   numElements++;
 }
 
 
@@ -751,17 +713,16 @@ void list <T> ::push_front(T && data)
 template <typename T>
 void list <T> ::pop_back()
 {
-    if(pTail)
-    {
-        Node *nodeToDelte = pTail;
-        pTail = pTail-> pPrev;
-        
-   
-        pTail->pNext = nullptr;
+   if(pTail)
+   {
+      Node *nodeToDelte = pTail;
+      pTail = pTail->pPrev;
+           
+      pTail->pNext = nullptr;
     
-        delete nodeToDelte;
-        numElements--;
-    }
+      delete nodeToDelte;
+      numElements--;
+   }
 }
 
 /*********************************************
@@ -774,25 +735,21 @@ void list <T> ::pop_back()
 template <typename T>
 void list <T> ::pop_front()
 {
-    if(pHead)
-    {
-
-       Node *nodeToDelete = pHead;
+   if(pHead)
+   {
+      Node *nodeToDelete = pHead;
         
-       pHead = pHead->pNext;
+      pHead = pHead->pNext;
+      pHead->pPrev = nullptr;
         
-       pHead->pPrev = nullptr;
-        
-       delete nodeToDelete;
-        
-       numElements--;
-    }
-    else
-    {
-       pHead = nullptr;
-       pTail = nullptr;
-       numElements =0;
-    }
+      delete nodeToDelete;
+      numElements--;
+   }
+   else
+   {
+      pHead = pTail = nullptr;
+      numElements = 0;
+   }
 }
 
 /*********************************************
@@ -805,14 +762,10 @@ void list <T> ::pop_front()
 template <typename T>
 T & list <T> :: front()
 {
-    if (pHead)
-     {
-        return pHead->data;
-     }
-     else
-     {
-        throw("ERROR: unable to access data from an empty list");
-     }
+   if (pHead)
+      return pHead->data;
+   else
+      throw("ERROR: unable to access data from an empty list");
 }
 
 /*********************************************
@@ -825,14 +778,10 @@ T & list <T> :: front()
 template <typename T>
 T & list <T> :: back()
 {
-    if (pTail)
-       {
-          return pTail->data;
-       }
-       else
-       {
-          throw("ERROR: unable to access data from an empty list");
-       }
+   if (pTail)
+      return pTail->data;
+   else
+      throw("ERROR: unable to access data from an empty list");
 }
 
 /******************************************
@@ -845,45 +794,39 @@ T & list <T> :: back()
 template <typename T>
 typename list <T> :: iterator  list <T> :: erase(const list <T> :: iterator & it)
 {
-    if (empty())
-     {
-        return nullptr;
-     }
-     
+   if (empty())
+   {
+      return nullptr;
+   }
+   else
+   {
+      Node* tempNode = it.p->pNext;
+
+      if (it.p->pNext)
+      {
+         it.p->pNext->pPrev = it.p->pPrev;
+         tempNode = it.p->pNext;
+      }
+      else
+      {
+         pTail = pTail->pPrev;
+      }
 
 
-     else
-     {
-        Node* temp = it.p->pNext;
-
-        if (it.p->pNext)
-        {
-           it.p->pNext->pPrev = it.p->pPrev;
-           temp = it.p->pNext;
-
-           //std::cout << "testign" << std::endl;
-           //it.p->
-        }
-        else
-        {
-           pTail = pTail->pPrev;
-        }
+      if (it.p->pPrev)
+      {
+         it.p->pPrev->pNext = it.p->pNext;
+      }
+      else
+      {
+         pHead = pHead->pNext;
+      }
 
 
-        if (it.p->pPrev)
-        {
-           it.p->pPrev->pNext = it.p->pNext;
-        }
-        else
-        {
-           pHead = pHead->pNext;
-        }
-
-
-        delete it.p;
-        numElements--;
-        return temp;
-     }
+      delete it.p;
+      numElements--;
+      return tempNode;
+   }
 }
 
 /******************************************
@@ -895,159 +838,122 @@ typename list <T> :: iterator  list <T> :: erase(const list <T> :: iterator & it
  *     COST   : O(1)
  ******************************************/
 template <typename T>
-typename list <T> :: iterator list <T> :: insert(list <T> :: iterator it,
-                                                 const T & data) 
+typename list <T> :: iterator list <T> :: insert(list <T> :: iterator it, const T & data) 
 {
-    if (empty())
-    {
-       Node* pNew = new Node(data); // create new node.
-       pHead = pTail = pNew; // because the lsit is empty, this node is both the head andd tail.
-       numElements++; // it is the only element in the node list.
-       return begin();
-
-    }
-    
-    else if (it == end())
-    {
-       Node* pNew = new Node(data);
+   if (empty())
+   {
+      Node* pNew = new Node(data); // create new node.
+      pHead = pTail = pNew; // because the lsit is empty, this node is both the head andd tail.
+      
+      numElements++; // it is the only element in the node list.
+      return begin();
+   }
+   else if (it == end())
+   {
+      Node* pNew = new Node(data);
        
-       pTail->pNext = pNew; //
-       pNew->pPrev = pTail; //
+      pTail->pNext = pNew; 
+      pNew->pPrev = pTail; 
 
-       pTail = pNew;
+      pTail = pNew;
 
-       numElements++;
+      numElements++;
+      return iterator(pNew);
+   }
+   else if (it == begin())
+   {
+      Node* pNew = new Node(data);
+      pNew->pNext = pHead;
 
-       return iterator(pNew);
-    }
+      pHead = pNew;
 
-    else if (it == begin())
-    {
-       Node* pNew = new Node(data);
-       pNew->pNext = pHead;
+      pHead->pNext->pPrev = pHead;;
 
+      numElements++;
+      return pNew;
+   }
+   else
+   {
+      Node* pNew = new Node(data);
 
-       pHead = pNew;
-
-
-       pHead->pNext->pPrev = pHead;;
-
-       numElements++;
-    
-       return pNew;
-    }
-
-    else
-    {
-       Node* pNew = new Node(data);
-
-
-       pNew->pPrev = it.p->pPrev;
-       pNew->pNext = it.p;
+      pNew->pPrev = it.p->pPrev;
+      pNew->pNext = it.p;
        
-
-       if (pNew->pPrev)
-       {
-          pNew->pPrev->pNext = pNew;
-       }
-       else
-       {
-          pHead = pNew;
-       }
+      if (pNew->pPrev)
+         pNew->pPrev->pNext = pNew;
+      else
+         pHead = pNew;
 
 
-       if (pNew->pNext)
-       {
-          pNew->pNext->pPrev = pNew;
-       }
-       else
-       {
-          pTail = pNew;
-       }
+      if (pNew->pNext)
+         pNew->pNext->pPrev = pNew;
+      else
+         pTail = pNew;
 
 
-       numElements++;
-       return pNew;
-    }
+      numElements++;
+      return pNew;
+   }
 }
 
 template <typename T>
 typename list <T> :: iterator list <T> :: insert(list <T> :: iterator it,
    T && data)
 {
-    // This is called If the list is empty
-    if (empty())
-    {
-       Node* pNew = new Node(data); // create new node.
-       pHead = pTail = pNew; // because the lsit is empty, this node is both the head andd tail.
-       numElements++; // it is the only element in the node list.
-       return begin();
+   // This is called If the list is empty
+   if (empty())
+   {
+      Node* pNew = new Node(data); // create new node.
+      pHead = pTail = pNew; // because the lsit is empty, this node is both the head andd tail.
 
-    }
+      numElements++; // it is the only element in the node list.
+      return begin();
+   }
+   else if (it == end())
+   {
+      Node* pNew = new Node(data);
 
-    else if (it == end())
-    {
-       Node* pNew = new Node(data);
+      pTail->pNext = pNew; 
+      pNew->pPrev = pTail; 
 
-       pTail->pNext = pNew; //
-       pNew->pPrev = pTail; //
+      pTail = pNew;
 
-       pTail = pNew;
+      numElements++;
+      return iterator(pNew);
+   }
+   else if (it == begin())
+   {
+      Node* pNew = new Node(data);  // Create  The New Node
+      pNew->pNext = pHead; // Set the Next node for the New node to be the OLD head.
 
-       numElements++;
+      pHead = pNew;  // Set the OLD Head to be the new node
+      pHead->pNext->pPrev = pHead;
 
-       return iterator(pNew);
-    }
+      numElements++;
+      return pNew;
+   }
+   else
+   {
+      Node* pNew = new Node(data);
 
-    else if (it == begin())
-    {
-       Node* pNew = new Node(data);  // Create  The New Node
-       pNew->pNext = pHead; // Set the Next node for the New node to be the OLD head.
+      pNew->pPrev = it.p->pPrev;
+      pNew->pNext = it.p;
 
-
-       pHead = pNew;  // Set the OLD Head to be the new node
-
-
-       pHead->pNext->pPrev = pHead;
-
-       numElements++;
-
-       return pNew;
-    }
-
-    else
-    {
-       Node* pNew = new Node(data);
-
-
-       pNew->pPrev = it.p->pPrev;
-       pNew->pNext = it.p;
+      if (pNew->pPrev)
+         pNew->pPrev->pNext = pNew;
+      else
+         pHead = pNew;
 
 
-       if (pNew->pPrev)
-       {
-          pNew->pPrev->pNext = pNew;
-       }
-       else
-       {
-          pHead = pNew;
-       }
+      if (pNew->pNext)
+         pNew->pNext->pPrev = pNew;
+      else
+         pTail = pNew;
 
 
-       if (pNew->pNext)
-       {
-          pNew->pNext->pPrev = pNew;
-       }
-       else
-       {
-          pTail = pNew;
-       }
-
-
-       numElements++;
-       return pNew;
-    }
-
+      numElements++;
+      return pNew;
+   }
 }
 
 /**********************************************
@@ -1060,7 +966,7 @@ typename list <T> :: iterator list <T> :: insert(list <T> :: iterator it,
 template <typename T>
 void swap(list <T> & lhs, list <T> & rhs)
 {
-    // Swap Head
+   // Swap Head
    std::swap(lhs.pHead, rhs.pHead);
    
    // Swap Tail
