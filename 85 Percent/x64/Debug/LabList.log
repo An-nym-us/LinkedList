@@ -7,4 +7,5 @@ C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 Link
 C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(149,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
 C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(187,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
 C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\testList.h(188,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'custom::list::Node *' of greater size
+C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\list.h(873): warning C4715: 'custom::list::erase': not all control paths return a value
   LabList.vcxproj -> C:\Users\Jonathans Desktop\Documents\Schoolwork\DESIGNING data strucs\Lab 4 LinkedLists\LinkedList\85 Percent\x64\Debug\LabList.exe

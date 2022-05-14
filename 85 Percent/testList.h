@@ -55,12 +55,12 @@ public:
       test_assignInit_leftBigger();
 
        //Iterator
-      //test_iterator_begin_empty();
-      //test_iterator_begin_standard();
-      //test_iterator_end_standard();
-      //test_iterator_increment_standardMiddle();
-      //test_iterator_dereference_read();
-      //test_iterator_dereference_update();
+      test_iterator_begin_empty();
+      test_iterator_begin_standard();
+      test_iterator_end_standard();
+      test_iterator_increment_standardMiddle();
+      test_iterator_dereference_read();
+      test_iterator_dereference_update();
 
       // //Access
       test_front_empty();
@@ -79,13 +79,13 @@ public:
       test_pushfront_standard();
       test_pushfront_moveEmpty();
       test_pushfront_moveStandard();
-      //test_insert_empty();
-      //test_insert_standardFront();
-      //test_insert_standardMiddle();
-      //test_insert_standardEnd();
-      //test_insertMove_empty();
-      //test_insertMove_standardFront();
-      //test_insertMove_standardMiddle();
+      test_insert_empty();
+      test_insert_standardFront();
+      test_insert_standardMiddle();
+      test_insert_standardEnd();
+      test_insertMove_empty();
+      test_insertMove_standardFront();
+      test_insertMove_standardMiddle();
 
       // //Remove
       test_clear_empty();
@@ -94,8 +94,8 @@ public:
       test_popback_standard();
       test_popfront_empty();
       test_popfront_standard();
-      //test_erase_empty();
-      //test_erase_standardFront();
+      test_erase_empty();
+      test_erase_standardFront();
       //test_erase_standardMiddle();
       //test_erase_standardEnd();
 
@@ -1763,6 +1763,7 @@ public:
       custom::list l;
       custom::list::iterator it;
       // exercise
+      
       it = l.begin();
       // verify
       assertUnit(it.p == nullptr);

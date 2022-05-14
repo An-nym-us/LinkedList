@@ -106,7 +106,7 @@ public:
    // Status
    //
 
-   bool empty()  const { return numElements <= 0; }
+   bool empty()  const { return numElements == 0; }
    size_t size() const { return numElements; }
      
 private:
@@ -193,8 +193,8 @@ public:
    }
    
    // equals, not equals operator
-    bool operator == (const iterator & rhs) const { return rhs.p != this->p; }
-    bool operator != (const iterator & rhs) const { return rhs.p == this->p; }
+    bool operator == (const iterator & rhs) const { return rhs.p == this->p; }
+    bool operator != (const iterator & rhs) const { return rhs.p != this->p; }
    
    // dereference operator, fetch a node
    int & operator * ()
@@ -447,8 +447,11 @@ inline list::list(Iterator first, Iterator last)
     
     for(auto it= first+1; it!= last-2; ++it)
     {
-      //if (it != nullptr)
-         headNode-> data = *it;
+
+
+          headNode->data = *it;
+       
+
        count++;
     }
     // Keep Track of Current Head
@@ -860,20 +863,15 @@ inline int & list :: back()
  ******************************************/
 inline typename list :: iterator  list :: erase(const list :: iterator & it)
 {
-  // std::cout << "Im  called" << std::endl;
-   if (!(it.p))
+   if (it.p)
+   {
+      return nullptr;
+   }
+   
+   if (it == begin())
    {
 
-      //it.p->data = nullptr;
-      return it.p;
-      return end();
    }
-   else
-   {
-
-      return it.p;
-   }
-
 
 }
 
@@ -888,22 +886,157 @@ inline typename list :: iterator  list :: erase(const list :: iterator & it)
 inline typename list :: iterator list :: insert(list :: iterator it,
                                                 const int & data)
 {
-   if (!pTail)
+   if (empty())
    {
-      std::cout << "HML" << std::endl;
-      pHead = pTail = new Node(data);
-      numElements = 1;
+      Node* pNew = new Node(data); // create new node.
+      pHead = pTail = pNew; // because the lsit is empty, this node is both the head andd tail.
+      numElements++; // it is the only element in the node list.
       return begin();
+
    }
-   //it.p->pNext
    
-   return end();
+   else if (it == end())
+   {
+      Node* pNew = new Node(data);
+      
+      pTail->pNext = pNew; // 
+      pNew->pPrev = pTail; // 
+
+      pTail = pNew;
+
+      numElements++;
+
+      return iterator(pNew);
+   }
+
+   else if (it == begin())
+   {
+      Node* pNew = new Node(data);
+      pNew->pNext = pHead;
+
+
+      pHead = pNew;
+
+
+      pHead->pNext->pPrev = pHead;;
+
+      numElements++;
+   
+      return pNew;
+   }
+
+   else
+   {
+      Node* pNew = new Node(data);
+
+
+      pNew->pPrev = it.p->pPrev;
+      pNew->pNext = it.p;
+      
+
+      if (pNew->pPrev)
+      {
+         pNew->pPrev->pNext = pNew;
+      }
+      else
+      {
+         pHead = pNew;
+      }
+
+
+      if (pNew->pNext)
+      {
+         pNew->pNext->pPrev = pNew;
+      }
+      else
+      {
+         pTail = pNew;
+      }
+
+
+      numElements++;
+      return pNew;
+   }
+
+
+
 }
 
 inline typename list ::iterator list  ::insert(list ::iterator it,
                                                int && data)
 {
-   return end();
+   // This is called If the list is empty
+   if (empty())
+   {
+      Node* pNew = new Node(data); // create new node.
+      pHead = pTail = pNew; // because the lsit is empty, this node is both the head andd tail.
+      numElements++; // it is the only element in the node list.
+      return begin();
+
+   }
+
+   else if (it == end())
+   {
+      Node* pNew = new Node(data);
+
+      pTail->pNext = pNew; // 
+      pNew->pPrev = pTail; // 
+
+      pTail = pNew;
+
+      numElements++;
+
+      return iterator(pNew);
+   }
+
+   else if (it == begin())
+   {
+      Node* pNew = new Node(data);  // Create  The New Node
+      pNew->pNext = pHead; // Set the Next node for the New node to be the OLD head.
+
+
+      pHead = pNew;  // Set the OLD Head to be the new node
+
+
+      pHead->pNext->pPrev = pHead;  
+
+      numElements++;
+
+      return pNew;
+   }
+
+   else
+   {
+      Node* pNew = new Node(data);
+
+
+      pNew->pPrev = it.p->pPrev;
+      pNew->pNext = it.p;
+
+
+      if (pNew->pPrev)
+      {
+         pNew->pPrev->pNext = pNew;
+      }
+      else
+      {
+         pHead = pNew;
+      }
+
+
+      if (pNew->pNext)
+      {
+         pNew->pNext->pPrev = pNew;
+      }
+      else
+      {
+         pTail = pNew;
+      }
+
+
+      numElements++;
+      return pNew;
+   }
 }
 
 
@@ -937,10 +1070,8 @@ void swap(list & lhs, list & rhs)
  *********************************************/
 inline typename list::iterator list::begin()
 {
-    if(!pHead)
-    {
-        return iterator(nullptr);
-    }
+    
+
    return iterator(pHead);
    
 }
@@ -954,14 +1085,16 @@ inline typename list::iterator list::begin()
  *********************************************/
 inline typename list::iterator list::end()
 {
+   
+   //for (auto it = begin(); it != end(); ++it)
+   //{
+   //   return (it.p->pNext);;
+   //}
 
-   if (!pTail)
-   {
 
-      return iterator(nullptr);
 
-   }
-   return iterator(pTail->pNext);
+
+   return iterator(nullptr);
 }
 
 
